@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101212">
+  <meta name="description" content="A little friendly competition. Play Connect Four with a friend on any device, using a private room code.">
+  <title>four. — A little friendly competition.</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="header">
+      <a class="brand" href="/" aria-label="four. home" id="home-link"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>four<span class="brand-dot">.</span></a>
+      <div class="header-right"><span class="live-label"><span class="status-dot"></span> Made for two</span><button class="text-button" id="rules-button">How to play <span aria-hidden="true">↗</span></button></div>
+    </header>
+
+    <main>
+      <section id="lobby" class="lobby" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="tiny-line"></span> THE CLASSIC. A NEW CONNECTION.</p>
+          <h1 id="hero-title">Good moves.<br>Great company<span class="accent">.</span></h1>
+          <p class="hero-description">Four in a row. Just the two of you.<br>A little friendly competition, wherever you are.</p>
+          <div class="lobby-card">
+            <div class="tabs" role="tablist" aria-label="Choose how to play">
+              <button id="create-tab" class="tab active" role="tab" aria-selected="true" aria-controls="room-form" data-mode="create">Create a room</button>
+              <button id="join-tab" class="tab" role="tab" aria-selected="false" aria-controls="room-form" tabindex="-1" data-mode="join">Join a room</button>
+            </div>
+            <form id="room-form" role="tabpanel" aria-labelledby="create-tab">
+              <label for="player-name">YOUR NAME <span>optional</span></label>
+              <input id="player-name" name="name" autocomplete="nickname" placeholder="What should we call you?" maxlength="18">
+              <div id="code-field" hidden><label for="room-code">ROOM CODE</label><input id="room-code" name="code" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABC123" maxlength="6" aria-describedby="code-help"><p id="code-help" class="field-help">Ask your friend for their six-character code.</p></div>
+              <p class="form-error" id="form-error" role="alert" hidden></p>
+              <button type="submit" class="button button-primary" id="start-button"><span id="start-label">Let’s play</span><span aria-hidden="true">↗</span></button>
+              <p id="form-hint" class="form-hint">Create a room. Send the code. You’re in.</p>
+            </form>
+          </div>
+          <div class="features"><span><span aria-hidden="true">✓</span> No sign-up</span><span><span aria-hidden="true">⌁</span> Real-time play</span><span><span aria-hidden="true">▱</span> Any device</span></div>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-top"><span class="outline-tag">CONNECT FOUR</span><span class="art-number">01 / IN GOOD COMPANY</span></div>
+          <div class="art-board-wrap"><div class="demo-board" id="demo-board"></div><div class="board-foot"></div></div>
+          <div class="art-bottom"><div class="art-player"><i class="disc-dot lime"></i> YOU</div><span class="art-vs">vs.</span><div class="art-player"><i class="disc-dot lilac"></i> YOUR PLUS ONE</div></div>
+          <p class="art-caption">Same classic. Different corners of the world.</p>
+          <span class="spark spark-one">✳</span><span class="spark spark-two">+</span>
+        </div>
+      </section>
+
+      <section id="game" class="game-view" aria-labelledby="game-heading" hidden>
+        <div class="game-topline"><button id="leave-button" class="text-button"><span aria-hidden="true">←</span> Leave room</button><span class="connection-badge" id="connection-badge"><span class="status-dot"></span><span id="connection-label">Connecting</span></span></div>
+        <div class="game-layout">
+          <div class="play-area">
+            <div class="game-title-row"><div><p class="eyebrow">A LITTLE FRIENDLY COMPETITION</p><h1 id="game-heading">Make your move<span class="accent">.</span></h1></div><span class="round-tag" id="round-label">ROUND 01</span></div>
+            <div class="players">
+              <div class="player-card p1" id="player-1"><span class="player-avatar">●</span><div class="player-detail"><strong id="name-1">Player 1</strong><span id="presence-1">Connecting</span></div><span class="score" id="score-1" aria-label="Player 1 wins">0</span></div>
+              <span class="versus">VS</span>
+              <div class="player-card p2" id="player-2"><span class="player-avatar">◆</span><div class="player-detail"><strong id="name-2">Your plus one</strong><span id="presence-2">Waiting to join</span></div><span class="score" id="score-2" aria-label="Player 2 wins">0</span></div>
+            </div>
+            <div class="turn-banner" id="turn-banner" role="status" aria-live="polite"><span class="turn-symbol" id="turn-symbol">●</span><div><strong id="turn-title">Your table is ready</strong><span id="turn-detail">Invite a friend to get started.</span></div></div>
+            <div class="board-frame" id="board-frame"><div class="board" id="board" role="group" aria-label="Connect Four board. Choose a column to drop a piece."></div></div>
+            <div class="board-meta"><span id="move-count">0 pieces played</span><span class="keyboard-hint">Click a column or press <kbd>1</kbd> – <kbd>7</kbd></span><span class="touch-hint">Tap a column to drop</span></div>
+            <button id="rematch-button" class="button button-primary rematch-button" hidden>Play again <span aria-hidden="true">↻</span></button>
+          </div>
+          <aside class="room-sidebar">
+            <div class="invite-card"><div class="card-heading"><span class="eyebrow">YOUR PRIVATE ROOM</span><span aria-hidden="true" class="small-icon">⌑</span></div><p class="room-code-display" id="display-code"></p><button class="button button-secondary" id="copy-code">Copy room code <span aria-hidden="true">▢</span></button><button class="text-button share-link" id="copy-link">Copy invite link <span aria-hidden="true">↗</span></button><p class="invite-hint" id="invite-hint">Send this to a friend. They can join from any device.</p></div>
+            <div class="quick-rules"><span class="eyebrow">ONE SIMPLE GOAL</span><div class="four-dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div><h2>Make a connection.</h2><p>Line up four of your pieces horizontally, vertically, or diagonally.</p><span class="rules-footnote">Take turns. Think ahead. Have fun.</span></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+    <footer><span>Small game. Good company.</span><span class="footer-right">TWO PLAYERS <i></i> ENDLESS REMATCHES</span></footer>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="rules-dialog" aria-labelledby="rules-heading"><div class="dialog-top"><span class="eyebrow">THE RULES ARE SIMPLE</span><button class="icon-button" data-close="rules-dialog" aria-label="Close rules">×</button></div><h2 id="rules-heading">Four is the magic number<span class="accent">.</span></h2><ol class="rules-list"><li><span>01</span><div><strong>Bring a friend.</strong><p>Create a room and share the code. Your friend joins on their own device.</p></div></li><li><span>02</span><div><strong>Take your turn.</strong><p>Choose a column. Your piece falls to the lowest empty space. The creator goes first in round one.</p></div></li><li><span>03</span><div><strong>Connect four.</strong><p>Get four in a row across, down, or diagonally to win. A full board with no winner is a draw.</p></div></li></ol><p class="dialog-note">Want another round? Both players choose Play again. The starting player alternates.</p><button class="button button-primary" data-close="rules-dialog">Got it. Let’s play <span aria-hidden="true">↗</span></button></dialog>
+  <dialog id="leave-dialog" aria-labelledby="leave-heading"><div class="dialog-top"><span class="eyebrow">CALL IT A GAME?</span><button class="icon-button" data-close="leave-dialog" aria-label="Cancel leaving">×</button></div><h2 id="leave-heading">Leave this room?</h2><p class="dialog-note">This ends the room for both players. You can always create a new one.</p><div class="dialog-actions"><button class="button button-secondary" data-close="leave-dialog">Keep playing</button><button class="button button-primary" id="confirm-leave">Leave room</button></div></dialog>
+</body>
+</html>

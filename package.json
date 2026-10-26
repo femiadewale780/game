@@ -1,0 +1,13 @@
+{
+  "name": "four-connect",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A real-time, two-player Connect Four game with private room codes.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test": "node --test"
+  }
+}
